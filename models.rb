@@ -371,7 +371,385 @@ class Person
     end
   end
   
+  def regeneration
+    case @constitution
+    when 1..19
+      0
+    when 20
+      6 #every how many turns
+    when 21
+      5
+    when 22
+      4
+    when 23
+      3
+    when 24
+      2
+    when 25
+      1
+    end
+  end
+  
+  # Intelligence tables
+  
+  def number_of_languages
+    case @intelligence
+    when 1
+      0
+    when 2..8
+      1
+    when 9..11
+      2
+    when 12, 13
+      3
+    when 14, 15
+      4
+    when 16
+      5
+    when 17
+      6
+    when 18
+      7
+    when 19
+      8
+    when 20
+      9
+    when 21
+      10
+    when 22
+      11
+    when 23
+      12
+    when 24
+      15
+    when 25
+      20
+    end
+  end
+  
+  def spell_level
+    case @intelligence
+    when 1..8
+      0
+    when 9
+      4
+    when 10, 11
+      5
+    when 12, 13
+      6
+    when 14, 15
+      7
+    when 16, 17
+      8
+    when 18..25
+      9
+    end 
+  end
+  
+  def chance_to_learn_spell_percentage
+    case @intelligence
+    when 1..8
+      0.00
+    when 9
+      0.35
+    when 10
+      0.40
+    when 11
+      0.45
+    when 12
+      0.50
+    when 13
+      0.55
+    when 14
+      0.60
+    when 15
+      0.65
+    when 16
+      0.70
+    when 17
+      0.75
+    when 18
+      0.85
+    when 19
+      0.95
+    when 20
+      0.96
+    when 21
+      0.97
+    when 22
+      0.98
+    when 23
+      0.99
+    when 24, 25
+      1.00
+    end
+  end
+  
+  def max_number_of_spells_per_level
+    case @intelligence
+    when 1..8
+      0
+    when 9
+      6
+    when 10..12
+      7
+    when 13, 14
+      9
+    when 15, 16
+      11
+    when 17
+      14
+    when 18
+      18
+    when 19..25
+      10000 #all/unlimited
+    end
+  end
+  
+  def level_of_illusion_immunity
+    case @intelligence
+    when 1..18
+      0
+    when 19
+      1
+    when 20
+      2
+    when 21
+      3
+    when 22
+      4
+    when 23
+      5
+    when 24
+      6
+    when 25
+      7
+    end
+  end
+  
+  # Wisdom Tables
+  
+  def magical_defense_adjustment
+    case @wisdom
+    when 1
+      -6
+    when 2
+      -4
+    when 3
+      -3
+    when 4
+      -2
+    when 5..7
+      -1
+    when 8..14
+      0
+    when 15
+      1
+    when 16
+      2
+    when 17
+      3
+    when 18..25
+      4
+    end
+  end
+  
+  def bonus_spells
+    #TODO
+  end
+  
+  def chance_of_spell_failure_percentage
+    case @wisdom
+    when 1
+      0.80
+    when 2
+      0.60
+    when 3
+      0.50
+    when 4
+      0.45
+    when 5
+      0.40
+    when 6
+      0.35
+    when 7
+      0.30
+    when 8
+      0.25
+    when 9
+      0.20
+    when 10
+      0.15
+    when 11
+      0.10
+    when 12
+      0.05
+    when 13..25
+      0.00
+    end
+  end
+  
+  def spell_immunity
+    # Returns an array of spells that player is immune to
+    case @wisdom
+    when 1..18
+      nil
+    when 19
+      ["Cause Fear", "Charm Person", "Command", "Friends", "Hypnotisim"] #Should have a relation to spells later which have records
+    when 20
+      ["Cause Fear", "Charm Person", "Command", "Friends", "Hypnotisim", "Forget", "Hold Person", "Ray of Enfeeblement", "Scare"]
+    when 21
+      ["Cause Fear", "Charm Person", "Command", "Friends", "Hypnotisim", "Forget", "Hold Person", "Ray of Enfeeblement", "Scare",     
+        "Fear"]
+    when 22
+      ["Cause Fear", "Charm Person", "Command", "Friends", "Hypnotisim", "Forget", "Hold Person", "Ray of Enfeeblement", "Scare",     
+        "Fear", "Charm Monster", "Confusion", "Emotion", "Fumble", "Suggestion"]
+    when 23
+      ["Cause Fear", "Charm Person", "Command", "Friends", "Hypnotisim", "Forget", "Hold Person", "Ray of Enfeeblement", "Scare",     
+        "Fear", "Charm Monster", "Confusion", "Emotion", "Fumble", "Suggestion", "Chaos", "Feeblemind", "Hold Monster", "Magic Jar", 
+        "Quest"] 
+    when 24 
+      ["Cause Fear", "Charm Person", "Command", "Friends", "Hypnotisim", "Forget", "Hold Person", "Ray of Enfeeblement", "Scare",     
+        "Fear", "Charm Monster", "Confusion", "Emotion", "Fumble", "Suggestion", "Chaos", "Feeblemind", "Hold Monster", "Magic Jar", 
+        "Quest", "Geas", "Mass Suggestion", "Rod of Rulership"]
+    when 25
+      ["Cause Fear", "Charm Person", "Command", "Friends", "Hypnotisim", "Forget", "Hold Person", "Ray of Enfeeblement", "Scare",     
+        "Fear", "Charm Monster", "Confusion", "Emotion", "Fumble", "Suggestion", "Chaos", "Feeblemind", "Hold Monster", "Magic Jar", 
+        "Quest", "Geas", "Mass Suggestion", "Rod of Rulership", "Antipathy/sympathy", "Death Spell", "Mass Charm"]
+    end
+  end
+  
   def change_stat(stat, amount)
+  end
+  
+  # Charisma Tables
+  
+  def maximum_number_of_henchmen
+    case @charisma
+    when 1
+      0
+    when 2..4
+      1
+    when 5, 6
+      2
+    when 7, 8
+      3
+    when 9..11
+      4
+    when 12, 13
+      5
+    when 16
+      8
+    when 17
+      10
+    when 18 
+      15
+    when 19
+      20
+    when 21
+      30
+    when 22
+      35
+    when 23
+      40
+    when 24
+      45
+    when 25
+      50
+    end
+      
+  end
+  
+  def loyalty_base
+    case @charisma
+    when 1
+      -8
+    when 2
+      -7
+    when 3
+      -6
+    when 4
+      -5
+    when 5
+      -4
+    when 6
+      -3
+    when 7
+      -2
+    when 8
+      -1
+    when 9..13
+      0
+    when 14
+      1
+    when 15
+      2
+    when 16
+      4
+    when 17
+      6
+    when 18
+      8
+    when 19
+      10
+    when 20
+      12
+    when 21
+      14
+    when 22
+      16
+    when 23
+      18
+    when 24, 25
+      20
+    end
+  end
+  
+  def reaction_adjustment
+    case @charisma
+    when 1
+      -7
+    when 2
+      -6
+    when 3
+      -5
+    when 4
+      -4
+    when 5
+      -3
+    when 6
+      -2
+    when 7
+      -1
+    when 8..12
+      0
+    when 13
+      1
+    when 14
+      2
+    when 15
+      3
+    when 16
+      5
+    when 17
+      6
+    when 18
+      7
+    when 19
+      8
+    when 20
+      9
+    when 21
+      10
+    when 22
+      11
+    when 23
+      12
+    when 24
+      13
+    when 25
+      14
+    end
   end
   
   private
