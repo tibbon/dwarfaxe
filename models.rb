@@ -1,14 +1,210 @@
 require 'ostruct'
 
 class Person
-  attr_accessor :strength, :intelligence, :dexterity, :constitution, :wisdom, :charisma, :max_hitpoints, :current_hitpoints, :thaco
+  attr_accessor :strength, 
+                :intelligence, 
+                :dexterity, 
+                :constitution, 
+                :wisdom, 
+                :charisma, 
+                :max_hitpoints, 
+                :current_hitpoints, 
+                :thac0,
+                :race,
+                :alignment,
+                :race,
+                :height,
+                :weight,
+                :age,
+                :name,
+                :base_movement,
+                :gender
 
   def initialize(*opt)
     roll_stats
+    @race = opt.first[:race]
+    randomize_gender
+    randomize_weight_and_height
+    randomize_age
+  end
+  
+  def randomize_gender
+    :male
   end
   
   def re_roll_stats
     roll_stats
+  end
+  
+  def update_stats_based_on_race
+    case @race
+    when :dwarf
+      @constitution += 1
+      @charisma -= 1
+      @base_movement = 6
+    when :elf
+      @dexterity += 1
+      @constitution -= 1
+      @base_movement = 12
+    when :gnome
+      @intelligence += 1
+      @wisdom -= 1
+      @base_movement = 6
+    when :halfling
+      @dexterity += 1
+      @strength -= 1
+      @base_movement = 6
+    when :human, :half_elf
+      @base_movement = 12
+    end
+  end
+  
+  def randomize_weight_and_height
+    if @gender == :male
+      case @race
+      when :elf
+        @height = 55 + Random.rand(1..10)
+        @weight = 90 + Random.rand(3..30)
+      when :half_elf
+        @height = 60 + Random.rand(2..12)
+        @weight = 110 + Random.rand(3..36)
+      when :dwarf
+        @height = 43 + Random.rand(1..10)
+        @weight = 130 + Random.rand(4..40)
+      when :human
+        @height = 60 + Random.rand(2..20)
+        @weight = 140 + Random.rand(6..60)
+      when :gnome
+        @height = 38 + Random.rand(1..6)
+        @weight = 72 + Random.rand(5..20)
+      when :halfling
+        @height = 32 + Random.rand(2..16)
+        @weight = 52 + Random.rand(5..20)
+      end
+    else @gender == :female
+      case @race
+      when :elf
+        @height = 50 + Random.rand(1..10)
+        @weight = 70 + Random.rand(3..30)
+      when :half_elf
+        @height = 58 + Random.rand(2..12)
+        @weight = 85 + Random.rand(3..36)
+      when :dwarf
+        @height = 41 + Random.rand(1..10)
+        @weight = 105 + Random.rand(4..40)
+      when :human
+        @height = 59 + Random.rand(2..20)
+        @weight = 100 + Random.rand(6..60)
+      when :gnome
+        @height = 36 + Random.rand(1..6)
+        @weight = 68 + Random.rand(5..20)
+      when :halfling
+        @height = 30 + Random.rand(2..16)
+        @weight = 48 + Random.rand(5..20)
+      end
+    end
+  end
+  
+  def randomize_age
+    case @race
+    when :dwarf
+      @age = 40 + Random.rand(5..30)
+    when :elf
+      @age = 100 + Random.rand(5..30)
+    when :gnome
+      @age = 60 + Random.rand(3..36)
+    when :half_elf
+      @age = 15 + Random.rand(1..6)
+    when :halfling
+      @age = 20 + Random.rand(3..12)
+    when :human
+      @age = 15 + Random.rand(1..4)
+    end
+    apply_aging_effects
+  end
+  
+  def apply_aging_effects
+    case @race
+    when :dwarf
+      case @age
+      when 125..166
+        middle_age_effects
+      when 167..249
+        old_age_effects
+      when 250..1000
+        venerable_age_effects
+      end
+    when :elf
+      case @age
+      when 175..232
+        middle_age_effects
+      when 233..349
+        old_age_effects
+      when 350..10000
+        venerable_age_effects
+      end
+    when :gnome
+      case @age
+      when 100..132
+        middle_age_effects
+      when 133..199
+        old_age_effects
+      when 200..1000
+        venerable_age_effects
+      end
+    when :half_elf
+      case @age
+      when 62..82
+        middle_age_effects
+      when 83..124
+        old_age_effects
+      when 125..1000
+        venerable_age_effects
+      end
+    when :halfling
+      case @age
+      when 50..66
+        middle_age_effects
+      when 67..99
+        old_age_effects
+      when 100..1000
+        venerable_age_effects
+      end
+    when :human
+      case @age
+      when 45..59
+        middle_age_effects
+      when 60..89
+        old_age_effects
+      when 90..1000
+        venerable_age_effects
+      end
+    end
+  end
+  
+  def middle_age_effects
+    @strength -= 1
+    @constitution -= 1
+    @intelligence += 1
+    @wisdom += 1
+  end
+  
+  def old_age_effects
+    #First apply middle age effects
+    middle_age_effects
+    @strength -= 2
+    @constitution -= 2
+    @dexterity -= 1
+    @wisdom += 1
+  end
+  
+  def venerable_age_effects
+    middle_age_effects
+    @strength -= 1
+    @constitution -= 1
+    @dexterity -= 1
+    @wisdom += 1
+    @intelligence += 1
   end
   
   #Strength Tables
